@@ -52,15 +52,13 @@
 
             <div class="input-group f-class">
                 <div>
-                    <label for="">First Class ($150)</label>
-                    <input class="inp-style inp-width" type="number" name="">
+                    <h5 id="vip-total">First Class($150)</h5>
+                    <input id="vip-count" class="inp-style inp-width" type="number" name="" value= "1">
                 </div>
-                <div class="plus-minus-btn">
-                    <!-- <p>+ -</p> -->
-                   
+                <div class="plus-minus-btn">         
                       <div>
-                        <button  class="btn btn-primary btn-sm">-</button>
-                        <button  class="btn btn-secondary btn-sm">+</button>
+                        <button onclick="FlightBookingChange('vip', false)" class="btn btn-primary btn-sm">-</button>
+                        <button onclick="FlightBookingChange('vip', true)" class="btn btn-secondary btn-sm">+</button>
                       </div>
 
                 </div>
@@ -68,15 +66,15 @@
 
             <div class="input-group f-class">
                 <div>
-                    <label for="">Economy ($100)</label>
-                    <input class="inp-style inp-width" type="number" name="">
+                    <h5 id="ticket-total">Economy($100)</h5>
+                    <input id="ticket-count" class="inp-style inp-width" type="number" name="" value= "1">
                 </div>
-                <div class="plus-minus-btn type= text" value= "1">
+                <div class="plus-minus-btn type= text" >
                     <div>
                      <span>
                         
-                        <button  class="btn btn-primary btn-sm">-</button>
-                        <button id="price-increase" class="btn btn-secondary btn-sm">+</button>
+                        <button onclick=" FlightBookingChange('ticket', false)" class="btn btn-primary btn-sm">-</button>
+                        <button onclick=" FlightBookingChange('ticket', true)" class="btn btn-secondary btn-sm">+</button>
                      </span>
                       </div>
                 </div>
@@ -87,7 +85,7 @@
                         <p>Subtotal</p>
                     </div>
                     <div class="right">
-                        <p>$500</p>
+                        <p id="total-price"  value= "0">$500</p>
                     </div>
                 </div>
 
@@ -96,7 +94,7 @@
                         <p>Charge 10% VAT</p>
                     </div>
                     <div class="right">
-                        <p>$50</p>
+                        <p id="tax-amount"  value= "0">$0</p>
                     </div>
                 </div>
                 <hr>
@@ -104,8 +102,8 @@
                     <div class="left">
                         <h4>Total</h4>
                     </div>
-                    <div class="right">
-                        <p>$550</p>
+                    <div class="right"  value= "0">
+                        <p id="grand-total" value= "0">$550</p>
                     </div>
                 </div>
             </div>
@@ -119,9 +117,97 @@
                 voluptatibus quam</p>
         </div>
         <script>
-            document.getElementById('price-increase').addEventListener('click', function(){
-                console.log('21')
-            })
+             function FlightBookingChange(Booking, isIncrease){
+                const BookingCount = getInputValue(Booking + '-count');
+                let BookingNewCount =BookingCount;
+                if(isIncrease == true){
+                    BookingNewCount = BookingCount + 1;
+                }
+                if(isIncrease == false && BookingCount > 0){
+                    BookingNewCount = BookingCount - 1;
+                }
+                document.getElementById(Booking + '-count').value = BookingNewCount;
+                // const ticketTotal = ticketNewCount * 100;
+                let BookingTotal = 0;
+                if(Booking == 'vip'){
+                    BookingTotal = BookingNewCount * 150;
+                }
+                if(Booking == 'ticket'){
+                    BookingTotal = BookingNewCount * 100;
+                }
+                document.getElementById(Booking + '-count').innerText = 'Total$' +  BookingTotal;
+                calculateTotal();
+            }
+
+            function calculateTotal(){
+                const vipCount = getInputValue('vip');
+                const ticketCount = getInputValue('ticket');
+
+                const totalPrice = vipCount *  150 + ticketCount * 100;
+                document.getElementById('total-price').innerText = '$' + totalPrice;
+
+
+                const tax = Math.round(totalPrice * 0.1);
+                document.getElementById('tax-amount').innerText = '$' + tax;
+
+                const grandTotal = totalPrice + tax;
+                document.getElementById('grand-total').innerText = '$' + grandTotal;
+            }
+
+            function getInputValue(Booking){
+                // console.log( Booking);
+                const BookingInput = document.getElementById(Booking + '-count');
+                const BookingCount = parseInt(BookingInput.value);
+                return BookingCount;
+            }
+
+            //   function FlightVipTicketChange(isIncrease){
+            //     const vipInput = document.getElementById('vip-count');
+            //     const vipCount = parseInt(vipInput.value);
+            //     let vipNewCount = vipCount;
+            //     if(isIncrease == true){
+            //         vipNewCount = vipCount + 1;
+            //     }
+            //     if(isIncrease == false && vipCount > 0){
+            //         vipNewCount = vipCount - 1;
+            //     }
+            //     vipInput.value = vipNewCount;
+            //     const vipTotal = vipNewCount * 150;
+            //     document.getElementById('vip-total').innerText = 'Total$' + vipTotal;
+            // }
+                 
+            // function FlightTicketChange(isIncrease){
+            //     const ticketInput = document.getElementById('ticket-count');
+            //     const ticketCount = parseInt(ticketInput.value);
+            //     let ticketNewCount = ticketCount;
+            //     if(isIncrease == true){
+            //         ticketNewCount = ticketCount + 1;
+            //     }
+            //     if(isIncrease == false && ticketCount > 0){
+            //         ticketNewCount = ticketCount - 1;
+            //     }
+            //     ticketInput.value = ticketNewCount;
+            //     const ticketTotal = ticketNewCount * 100;
+            //     document.getElementById('ticket-total').innerText = 'Total$' + ticketTotal;
+            // }
+            // document.getElementById('price-increase').addEventListener('click', function(){
+            //    const ticketInput = document.getElementById('ticket-count');
+            //    const ticketCount = parseInt(ticketInput.value)
+            //    const ticketNewCount = ticketCount + 1;
+            //    ticketInput.value = ticketNewCount;
+            //    const ticketTotal = ticketNewCount * 100;
+            //    document.getElementById('ticket-total').innerText = 'Total$' + ticketTotal;
+            // });
+
+            // document.getElementById('price-decrease').addEventListener('click', function(){
+            //     const ticketInput = document.getElementById('ticket-count');
+            //     const ticketCount = parseInt(ticketInput.value);
+            //     const ticketNewCount = ticketCount - 1;
+            //     ticketInput.value = ticketNewCount;
+            //     const ticketTotal = ticketNewCount * 100;
+            //     document.getElementById('ticket-total').innerText = 'Total$' + ticketTotal;
+
+            // })
         </script>
         </section>
 </body>
