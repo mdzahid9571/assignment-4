@@ -116,6 +116,11 @@ nav ul li a:hover, a.active{
     font-weight: 500;
     background-color:  #3352F2;
 }
+#new-page{
+    display: none;
+}
+
+
 .amount{
     display: flex;
     justify-content: space-between;
